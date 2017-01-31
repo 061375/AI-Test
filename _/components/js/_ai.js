@@ -8,7 +8,7 @@ var Ai = (function() {
   
   "use strict";
   
-  var events;
+  var events = {};
   
   var stop = $('.stop');
   /**
@@ -17,7 +17,10 @@ var Ai = (function() {
    * @returns {Void}
    * */ 
   var bindActions = function() {
-    stop.on('click', function(){clearInterval(moveMe.runid)});
+    stop.on('click', function(){
+      clearInterval(moveMe.runid);
+      console.log(events);
+    });
   };
   /**
    * init
@@ -25,12 +28,13 @@ var Ai = (function() {
    * @returns {Void}
    * */ 
   var init = function() {
-    //bindActions();
+    bindActions();
     console.log(distance_to_directions(moveMe,Target));
   };
 
   return {
-    init: init
+    init: init,
+    events:events
   };
 
 }());

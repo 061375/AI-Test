@@ -7,35 +7,37 @@ var moveMe = {
     target:Target,
     me:$('.moveme'),
     runid:false,
-    runspeed:1000,
-    speed:3,
+    runspeed:10,
+    speed:100,
     events:{
         port:Math.random() * 1,
         startboard:Math.random() * 1,
         distance:Math.random() * 1
     },
     init:function() {
+        this.x = $(window).width()/2;
+        this.y = $(window).height()/2;
         this.x = Math.random() * $(window).width();
         this.y = Math.random() * $(window).height();
         this.dir = Math.floor(Math.random() * 360);
-        this.x = $(window).width()/2;
-        this.y = $(window).height()/2;
+
         this.me.css("left",this.x);
         this.me.css("top",this.y);
         this.me.css('transform','rotate('+this.dir+'deg)');
         this.runid = setInterval(function(){
-            this.loop();
+            moveMe.loop();
         },this.runspeed);
     },
     loop:function() {
-        if (this.events.port < this.events.starboard) {
-            this.dir--;
-        }else{
+        if (this.events.port > this.events.starboard) {
             this.dir++;
+        }else{
+            this.dir--;
         }
         if (this.dir > 360) this.dir = 0;
         if (this.dir < 0) this.dir = 360;
         var xy = motion_set_2(this.x,this.y,this.dir,this.speed);
+        //console.log(xy);
         this.x = xy.x;
         this.y = xy.y;
         
@@ -47,8 +49,12 @@ var moveMe = {
         this.me.css('transform','rotate('+this.dir+'deg)');
         
         // record what happened (local for now)
-        var r = distance_to_directions(this,this.target);
+        var r = distance_to_directions(moveMe,Target);
         this.events.port = r.port;
-        this.events.startboard = r.starboard;
+        this.events.starboard = r.starboard;
+        document.getElementById("port").value = this.events.port;
+        document.getElementById("starboard").value = this.events.starboard;
+        var ev = "ev"+Math.floor(this.dir)+Math.floor(point_direction(this.x,this.y,Target.x,Target.y));
+        Ai.events[ev] = r;
     }
 }

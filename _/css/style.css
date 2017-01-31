@@ -8,7 +8,6 @@
 
 /* line 9, ../components/sass/style.scss */
 .moveme {
-  transition: all 0.3s linear;
   position: absolute;
   width: 32px;
   height: 32px; }
