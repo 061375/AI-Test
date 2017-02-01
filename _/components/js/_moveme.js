@@ -36,13 +36,20 @@ var moveMe = {
         }
         if (this.dir > 360) this.dir = 0;
         if (this.dir < 0) this.dir = 360;
+        
         var xy = motion_set_2(this.x,this.y,this.dir,this.speed);
-        //console.log(xy);
+
         this.x = xy.x;
         this.y = xy.y;
         
         // check outside
         
+        // check if near target
+        var d = distance_to_point(this.x,this.y,Target.x+(Target.width/2),Target.y+(Target.width/2));
+        
+        if (d < Target.width) {
+            Target.move();
+        }
         // render the current location
         this.me.css("left",this.x);
         this.me.css("top",this.y);
